@@ -36,9 +36,12 @@ def main():
             hands = detector.detect(frame)
             frame_counter += 1  # Increase frame count
 
+            # Ensure gestures is always defined
+            gestures = []
+
             # Limit logs to every 10 frames (adjust as needed)
             if frame_counter % 10 == 0:
-                print(f"📷 Detected hands: {len(hands)}")
+                print(f" Detected hands: {len(hands)}")
 
             if hands:
                 gestures = classifier.classify(hands)
