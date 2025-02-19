@@ -9,48 +9,45 @@ class GestureClassifier:
     def classify(self, hands):
         gestures = []
         for hand in hands:
-            gesture = self._classify_single(hand['landmarks'])
+            num_fingers = self._count_fingers(hand['landmarks'])
+            gesture = self._classify_single(hand['landmarks'], num_fingers)
             
-            # If no specific gesture is detected, default to "open_hand"
+            # Default gesture if no specific match
             if not gesture:
                 gesture = "open_hand"  
 
             gestures.append({
                 'type': gesture,
+                'fingers': num_fingers,  # Include finger count
                 'handedness': hand['handedness']
             })
         
         return gestures
     
-    def _classify_single(self, landmarks):
-        """ Classify hand gestures based on landmark positions. """
-        lm_array = np.array([[lm.x, lm.y] for lm in landmarks])
+    def _classify_single(self, landmarks, num_fingers):
+        """ Classify hand gestures based on landmark positions and finger count. """
+        lm_array = np.array([[lm[0], lm[1]] for lm in landmarks])  # Corrected to use tuple indexing
 
-        # Analyze finger positions
-        finger_states = self._analyze_fingers(lm_array)
-        self.history.append(finger_states)
-        
-        # Classify gesture
-        return self._state_machine_classification()
-
-    def _analyze_fingers(self, lm_array):
-        """ Simple classification: Detect open hand or fist """
-        # Thumb to pinky distance (simple fist detection)
-        thumb_tip = lm_array[4]
-        pinky_tip = lm_array[20]
-        distance = np.linalg.norm(thumb_tip - pinky_tip)
-
-        if distance < 0.05:  # Small distance → Fist
+        # Simple classification based on finger count
+        if num_fingers == 0:
             return "fist"
-        return "open_hand"
-
-    def _state_machine_classification(self):
-        """ Use past gestures to determine a final classification """
-        if not self.history:
+        elif num_fingers == 5:
             return "open_hand"
+        elif num_fingers == 1:
+            return "pointing"
+        elif num_fingers == 2:
+            return "peace"
+        return "unknown"
 
-        # If at least 6 out of 10 frames detected a fist, classify as fist
-        if list(self.history).count("fist") > 6:
-            return "fist"
-        
-        return "open_hand"
+    def _count_fingers(self, landmarks):
+        """ Count the number of extended fingers. """
+        # Finger tip and base landmark indices (from MediaPipe)
+        finger_tips = [4, 8, 12, 16, 20]
+        finger_bases = [2, 6, 10, 14, 18]
+
+        count = 0
+        for tip, base in zip(finger_tips, finger_bases):
+            if landmarks[tip][1] < landmarks[base][1]:  # Tip is above base (finger extended)
+                count += 1
+
+        return count

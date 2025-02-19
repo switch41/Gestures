@@ -18,7 +18,9 @@ def main():
     classifier = GestureClassifier(config)
     ui = KioskInterface(config)
     hardware = KioskHardwareController(config, args.hardware)
-    voice = VoiceFeedbackSystem(config)
+    
+    # FIXED: Removed 'config' argument from VoiceFeedbackSystem
+    voice = VoiceFeedbackSystem()
 
     cap = cv2.VideoCapture(0)
 
@@ -65,7 +67,7 @@ def main():
 
             # Generate feedback
             feedback_frame = ui.render(frame)
-            voice.announce(ui.feedback_text)
+            voice.speak(ui.feedback_text)
 
             # Show output in debug mode
             if args.mode == 'debug':
