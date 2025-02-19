@@ -1,3 +1,4 @@
+import cv2
 class AnimationEngine:
     def __init__(self):
         self.active_animations = []
