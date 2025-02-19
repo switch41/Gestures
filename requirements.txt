@@ -1,0 +1,6 @@
+opencv-python>=4.5
+mediapipe>=0.10
+numpy>=1.21
+pyttsx3==2.90
+pyserial>=3.5
+python-dotenv>=0.19
