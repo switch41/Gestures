@@ -48,7 +48,7 @@ To take this project to the next level, the following upgrades can be considered
 - **Cloud-based model training** for continuous improvement in accuracy.
 
 ## Contributor
-- **switch41**,**Cogni Crafters** 
+- **switch41**
 
 ## License
 This project is licensed under the MIT License.
