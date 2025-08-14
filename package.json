@@ -1,0 +1,20 @@
+{
+  "name": "gestures",
+  "version": "1.0.0",
+  "description": "## Overview This project is a gesture-based kiosk system that utilizes computer vision and machine learning to detect and classify hand gestures. It provides an interactive, touchless interface for kiosks, enhancing accessibility and user experience.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/switch41/Gestures.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/switch41/Gestures/issues"
+  },
+  "homepage": "https://github.com/switch41/Gestures#readme"
+}

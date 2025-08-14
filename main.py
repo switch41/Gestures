@@ -70,7 +70,19 @@ def main():
             voice.speak(ui.feedback_text)
 
             # Show output in debug mode
-            if args.mode == 'debug':
+            if args.mode in ['debug', 'kiosk']:
+                # Overlay recognized gesture(s) for visual confirmation
+                if gestures:
+                    gesture_labels = ", ".join([g['type'] for g in gestures])
+                    cv2.putText(
+                        feedback_frame,
+                        f"Gesture: {gesture_labels}",
+                        (20, 200),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.9,
+                        (0, 255, 255),
+                        2,
+                    )
                 cv2.imshow('Kiosk Debug', feedback_frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     print("\n User exited with 'q'. Shutting down...")
